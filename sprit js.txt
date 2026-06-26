@@ -1,0 +1,162 @@
+const questions = [
+    {
+        id: 1,
+        question: "જો 2x + 5 = 17 હોય તો x નું મૂલ્ય શોધો।",
+        correctAnswer: "6",
+        explanation: "2x + 5 = 17 → 2x = 12 → x = 6"
+    },
+    {
+        id: 2,
+        question: "એક લંબચોરસનું ક્ષેત્રફળ 48 છે અને તેની લંબાઈ 8 છે તો પહોળાઈ શોધો।",
+        correctAnswer: "6",
+        explanation: "ક્ષેત્રફળ = લંબાઈ × પહોળાઈ → 48 = 8 × પહોળાઈ → પહોળાઈ = 6"
+    },
+    {
+        id: 3,
+        question: "3x - 7 = 2x + 3 હોય તો x નું મૂલ્ય શોધો।",
+        correctAnswer: "10",
+        explanation: "3x - 7 = 2x + 3 → 3x - 2x = 3 + 7 → x = 10"
+    },
+    {
+        id: 4,
+        question: "એક ત્રિકોણનો પરિમાણ 30 છે અને બે બાજુ 10 અને 8 છે તો ત્રીજી બાજુ શોધો।",
+        correctAnswer: "12",
+        explanation: "પરિમાણ = બાજુ 1 + બાજુ 2 + બાજુ 3 → 30 = 10 + 8 + બાજુ 3 → બાજુ 3 = 12"
+    },
+    {
+        id: 5,
+        question: "4(x - 2) = 20 હોય તો x નું મૂલ્ય શોધો।",
+        correctAnswer: "7",
+        explanation: "4(x - 2) = 20 → x - 2 = 5 → x = 7"
+    },
+    {
+        id: 6,
+        question: "વર્તુળનો વ્યાસ 14 છે તો તેની ત્રિજ્યા શોધો।",
+        correctAnswer: "7",
+        explanation: "ત્રિજ્યા = વ્યાસ ÷ 2 = 14 ÷ 2 = 7"
+    },
+    {
+        id: 7,
+        question: "2x + 3x - 5 = 20 હોય તો x નું મૂલ્ય શોધો।",
+        correctAnswer: "5",
+        explanation: "2x + 3x - 5 = 20 → 5x - 5 = 20 → 5x = 25 → x = 5"
+    },
+    {
+        id: 8,
+        question: "એક ચોરસનો પરિમાણ 32 છે તો તેની બાજુ શોધો।",
+        correctAnswer: "8",
+        explanation: "ચોરસનો પરિમાણ = 4 × બાજુ → 32 = 4 × બાજુ → બાજુ = 8"
+    },
+    {
+        id: 9,
+        question: "x/2 + 3 = 8 હોય તો x નું મૂલ્ય શોધો।",
+        correctAnswer: "10",
+        explanation: "x/2 + 3 = 8 → x/2 = 5 → x = 10"
+    },
+    {
+        id: 10,
+        question: "3x - 5 = x + 7 હોય તો x નું મૂલ્ય શોધો।",
+        correctAnswer: "6",
+        explanation: "3x - 5 = x + 7 → 3x - x = 7 + 5 → 2x = 12 → x = 6"
+    }
+];
+
+let userAnswers = {};
+let score = 0;
+
+function initializeQuiz() {
+    const quizContainer = document.getElementById('quizContainer');
+    quizContainer.innerHTML = '';
+
+    questions.forEach(q => {
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
+        questionCard.innerHTML = `
+            <div class="question-number">પ્રશ્ન ${q.id}</div>
+            <div class="question-text">${q.question}</div>
+            <input 
+                type="text" 
+                class="answer-input" 
+                id="answer-${q.id}" 
+                placeholder="તમારો જવાબ લખો..."
+                onchange="recordAnswer(${q.id}, this.value)"
+            >
+            <div class="feedback" id="feedback-${q.id}"></div>
+            <div id="explanation-${q.id}" style="display:none; padding: 10px; background: #e7f3ff; border-left: 4px solid #667eea; margin-top: 10px; border-radius: 5px;">
+                <strong>સમજૂતી:</strong> ${q.explanation}
+            </div>
+        `;
+        quizContainer.appendChild(questionCard);
+    });
+}
+
+function recordAnswer(questionId, answer) {
+    userAnswers[questionId] = answer;
+}
+
+function submitAllAnswers() {
+    score = 0;
+    let allAnswered = true;
+
+    questions.forEach(q => {
+        const userAnswer = (userAnswers[q.id] || '').trim();
+        const inputField = document.getElementById(`answer-${q.id}`);
+        const feedback = document.getElementById(`feedback-${q.id}`);
+        const explanation = document.getElementById(`explanation-${q.id}`);
+
+        if (userAnswer === '') {
+            allAnswered = false;
+            inputField.style.borderColor = '#ffc107';
+            feedback.textContent = '⚠️ કૃપા કરીને જવાબ લખો!';
+            feedback.className = 'feedback show';
+            feedback.style.background = '#fff3cd';
+            feedback.style.borderLeft = '4px solid #ffc107';
+        } else if (userAnswer === q.correctAnswer) {
+            score++;
+            inputField.classList.add('correct');
+            inputField.classList.remove('incorrect');
+            feedback.textContent = '✅ સાચું છે!';
+            feedback.className = 'feedback show correct';
+            explanation.style.display = 'block';
+        } else {
+            inputField.classList.add('incorrect');
+            inputField.classList.remove('correct');
+            feedback.textContent = `❌ ખોટું છે! સાચો જવાબ: ${q.correctAnswer}`;
+            feedback.className = 'feedback show incorrect';
+            explanation.style.display = 'block';
+        }
+    });
+
+    document.getElementById('score').textContent = score;
+
+    if (allAnswered) {
+        setTimeout(() => {
+            alert(`\n✨ તમારી પરીક્ષા સમાપ્ત!\n\n📊 અંતિમ સ્કોર: ${score}/10\n\n${getScoreMessage(score)}`);
+        }, 500);
+    }
+}
+
+function getScoreMessage(s) {
+    if (s === 10) return '🌟 શાબાશ! પરફેક્ટ સ્કોર!';
+    if (s >= 8) return '🎉 ખૂબ સારું! તમે ખૂબ જ સારું કર્યું!';
+    if (s >= 6) return '👍 સારું! થોડું વધુ પ્રયાસ કરો.';
+    if (s >= 4) return '💪 યોગ્ય! વધુ અભ્યાસ કરો.';
+    return '📚 થોડું પછાધર! ફરીથી પ્રયાસ કરો.';
+}
+
+function resetQuiz() {
+    userAnswers = {};
+    score = 0;
+    document.getElementById('score').textContent = '0';
+
+    questions.forEach(q => {
+        document.getElementById(`answer-${q.id}`).value = '';
+        document.getElementById(`answer-${q.id}`).classList.remove('correct', 'incorrect');
+        document.getElementById(`feedback-${q.id}`).className = 'feedback';
+        document.getElementById(`feedback-${q.id}`).textContent = '';
+        document.getElementById(`explanation-${q.id}`).style.display = 'none';
+    });
+}
+
+// પ્રશ્નોત્તરી શરુ કરો
+window.addEventListener('DOMContentLoaded', initializeQuiz);

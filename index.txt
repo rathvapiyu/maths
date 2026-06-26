@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ગણિત પ્રશ્નોત્તરી - સરવાળા અને દખલા</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📐 ગણિત પ્રશ્નોત્તરી</h1>
+            <p>સરવાળા અને દખલા - 10મો ધોરણ</p>
+        </header>
+
+        <div class="score-board">
+            <div class="score">સ્કોર: <span id="score">0</span>/10</div>
+            <button class="reset-btn" onclick="resetQuiz()">ફરીથી શરુ કરો</button>
+            <button class="print-btn" onclick="window.print()">🖨️ પ્રિન્ટ કરો</button>
+        </div>
+
+        <div id="quizContainer" class="quiz-container">
+            <!-- પ્રશ્નો અહીં લોડ થશે -->
+        </div>
+
+        <button class="submit-all-btn" onclick="submitAllAnswers()">આજે સરુ કરો 📋</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
